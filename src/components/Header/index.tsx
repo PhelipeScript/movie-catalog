@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet, TextInput } from "react-native";
+import { Filter } from "../Filter";
 
 export function Header() {
   return (
@@ -6,7 +7,7 @@ export function Header() {
       <Text style={styles.title}>Catálogo de filmes</Text>
 
       <View style={styles.inputContainer}>
-        <Text>Filtro de ordenação</Text>
+        <Filter />
 
         <TextInput
           placeholder="Buscar filmes..."
