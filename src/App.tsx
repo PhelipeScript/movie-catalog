@@ -8,11 +8,17 @@ import { SortType } from './utils/sort';
 export function App() {
   const [sort, setSort] = useState<SortType>('asc');
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
 
   return (
     <SafeAreaView style={styles.container}>
       <Header filterAction={setSort} searchAction={setSearchQuery} />
-      <Catalog sort={sort} searchQuery={searchQuery}  />
+      <Catalog 
+        sort={sort} 
+        searchQuery={searchQuery} 
+        currentPage={currentPage} 
+        setCurrentPage={setCurrentPage} 
+      />
       <StatusBar style="auto" />
     </SafeAreaView>
   );

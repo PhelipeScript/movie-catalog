@@ -3,6 +3,7 @@ import { StyleSheet, FlatList, View, Text } from "react-native";
 import moviesImported from '../../../public/videos.json';
 import { MovieCard } from "../MovieCard";
 import { sortMovies, SortType } from "../../utils/sort";
+import { Pagination } from "../Pagination";
 
 export interface MovieProps {
   id: number;
@@ -16,45 +17,62 @@ export interface MovieProps {
 interface CatalogProps {
   sort: SortType;
   searchQuery: string;
+  currentPage: number;
+  setCurrentPage: (page: number) => void;
 }
 
-export function Catalog({ sort, searchQuery }: CatalogProps) {
+export function Catalog({ sort, searchQuery, currentPage, setCurrentPage }: CatalogProps) {
   const filteredMovies = moviesImported.filter((movie) => {
     return movie.title.toLowerCase().includes(searchQuery.toLowerCase());
   });
   const movies: MovieProps[] = sortMovies(filteredMovies, sort);
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.moviesAmount}>
-        Total: {movies.length} Filmes
-      </Text>
+  const start = (currentPage - 1) * 10;
+  const end = start + 10;
+  const moviesPaginated = movies.slice(start, end);
 
-      <FlatList
-        numColumns={2}
-        data={movies}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item, index }) => (
-          <MovieCard 
-            style={{ marginRight: index % 2 === 0 ? 16 : 0 }}
-            key={item.id}  
-            title={item.title}
-            description={item.description}
-            poster={item.poster}
-            year={item.year}
-            rating={item.rating}   
-          />
-        )}
-        ListEmptyComponent={() => (
-          <Text style={styles.emptyText}>
-            Nenhum filme encontrado
-          </Text>
-        )}
-        contentContainerStyle={movies.length === 0 ? styles.emptyContainer : { paddingBottom: 160, gap: 32 }}
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-      />
-    </View>
+  const totalPages = Math.ceil(movies.length / 10);
+
+  return (
+    <FlatList
+      style={styles.container}
+      numColumns={2}
+      data={moviesPaginated}
+      keyExtractor={(item) => item.id.toString()}
+      renderItem={({ item, index }) => (
+        <MovieCard 
+          style={{ marginRight: index % 2 === 0 ? 16 : 0 }}
+          key={item.id}  
+          title={item.title}
+          description={item.description}
+          poster={item.poster}
+          year={item.year}
+          rating={item.rating}   
+        />
+      )}
+      ListEmptyComponent={() => (
+        <Text style={styles.emptyText}>
+          Nenhum filme encontrado
+        </Text>
+      )}
+      ListHeaderComponent={
+        <Text style={styles.moviesAmount}>
+          Total: {movies.length} Filmes
+        </Text>
+      }
+      ListFooterComponent={
+        movies.length > 0 ? 
+          <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} /> 
+          : null
+      }
+      contentContainerStyle={
+        movies.length === 0 ? 
+          styles.emptyContainer : 
+          { paddingBottom: 160, gap: 32 }
+      }
+      showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}
+    />
   )
 }
 
