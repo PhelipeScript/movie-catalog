@@ -15,10 +15,14 @@ export interface MovieProps {
 
 interface CatalogProps {
   sort: SortType;
+  searchQuery: string;
 }
 
-export function Catalog({ sort }: CatalogProps) {
-  const movies: MovieProps[] = sortMovies(moviesImported, sort);
+export function Catalog({ sort, searchQuery }: CatalogProps) {
+  const filteredMovies = moviesImported.filter((movie) => {
+    return movie.title.toLowerCase().includes(searchQuery.toLowerCase());
+  });
+  const movies: MovieProps[] = sortMovies(filteredMovies, sort);
 
   return (
     <FlatList

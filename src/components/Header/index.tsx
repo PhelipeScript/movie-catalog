@@ -4,9 +4,10 @@ import { SortType } from "../../utils/sort";
 
 interface HeaderProps {
   filterAction: (value: SortType) => void;
+  searchAction: (value: string) => void;
 }
 
-export function Header({ filterAction }: HeaderProps) {
+export function Header({ filterAction, searchAction }: HeaderProps) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Catálogo de filmes</Text>
@@ -17,6 +18,7 @@ export function Header({ filterAction }: HeaderProps) {
         <TextInput
           placeholder="Buscar filmes..."
           style={styles.input}
+          onChange={(e) => searchAction(e.nativeEvent.text)}
         />
       </View>
     </View>
