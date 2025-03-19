@@ -1,3 +1,4 @@
+import { Star } from "phosphor-react-native";
 import { useState } from "react";
 import { Image, StyleSheet, Text, View, ViewStyle } from "react-native";
 
@@ -20,6 +21,8 @@ export function MovieCard({
 }: MovieProps) {
   const [imageUrl, setImageUrl] = useState(poster);
 
+  const ratingColor = rating > 7 ? '#28a745' : rating > 5 ? '#ffc107' : '#dc3545';
+
   return (
     <View style={{ ...styles.container, ...style }}>
       <Image 
@@ -36,14 +39,22 @@ export function MovieCard({
         >
           {title}
         </Text>
-        <Text style={styles.rating}>{rating}</Text>
+
+        <View style={styles.ratingContainer}>
+          <Text style={{ ...styles.rating, color: ratingColor }}>
+            {rating}
+          </Text>
+          <Star size={16} color={ratingColor} weight="fill" />
+        </View>
       </View>
       
       <Text 
         style={styles.description}
         numberOfLines={4}
         ellipsizeMode="tail"
-      >{description}</Text>
+      >
+        {description}
+      </Text>
     </View>
   )
 }
@@ -80,13 +91,22 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: '#333',
-    width: '75%',
+    width: '70%',
+  },
+
+  ratingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
   },
 
   rating: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#808011',
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    gap: 8,
   },
 
   description: {
