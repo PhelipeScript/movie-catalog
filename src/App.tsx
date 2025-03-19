@@ -1,13 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView, StyleSheet, Text } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import { Header } from './components/Header';
 import { Catalog } from './components/Catalog';
+import { useState } from 'react';
+import { SortType } from './utils/sort';
 
 export function App() {
+  const [sort, setSort] = useState<SortType>('asc');
+
   return (
     <SafeAreaView style={styles.container}>
-      <Header />
-      <Catalog />
+      <Header filterAction={setSort} />
+      <Catalog sort={sort} />
       <StatusBar style="auto" />
     </SafeAreaView>
   );

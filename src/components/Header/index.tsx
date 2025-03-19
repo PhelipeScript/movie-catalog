@@ -1,13 +1,18 @@
 import { View, Text, StyleSheet, TextInput } from "react-native";
 import { Filter } from "../Filter";
+import { SortType } from "../../utils/sort";
 
-export function Header() {
+interface HeaderProps {
+  filterAction: (value: SortType) => void;
+}
+
+export function Header({ filterAction }: HeaderProps) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Catálogo de filmes</Text>
 
       <View style={styles.inputContainer}>
-        <Filter />
+        <Filter sortAction={filterAction} />
 
         <TextInput
           placeholder="Buscar filmes..."

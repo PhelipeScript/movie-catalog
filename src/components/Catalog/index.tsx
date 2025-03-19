@@ -1,9 +1,25 @@
 import { StyleSheet, FlatList } from "react-native";
 
-import movies from '../../../public/videos.json';
+import moviesImported from '../../../public/videos.json';
 import { MovieCard } from "../MovieCard";
+import { sortMovies, SortType } from "../../utils/sort";
 
-export function Catalog() {
+export interface MovieProps {
+  id: number;
+  title: string;
+  description: string;
+  poster: string;
+  year: number;
+  rating: number;
+}
+
+interface CatalogProps {
+  sort: SortType;
+}
+
+export function Catalog({ sort }: CatalogProps) {
+  const movies: MovieProps[] = sortMovies(moviesImported, sort);
+
   return (
     <FlatList
       style={styles.container}

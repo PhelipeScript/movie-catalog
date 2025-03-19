@@ -1,11 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, Modal, FlatList, StyleSheet } from "react-native";
+import { SortType } from "../../utils/sort";
 
-export function Filter() {
-  const [sort, setSort] = useState<string | null>(null);
+interface FilterProps {
+  sortAction: (value: SortType) => void;
+}
+
+export function Filter({ sortAction }: FilterProps) {
+  const [sort, setSort] = useState<SortType | null>(null);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
-  const sortOptions = [
+  const sortOptions: {label: string, value: SortType}[] = [
     { label: "A-Z", value: "asc" },
     { label: "Z-A", value: "desc" },
     { label: "Mais Recentes", value: "recent" },
@@ -14,12 +19,16 @@ export function Filter() {
     { label: "Avaliação \n(menor para maior)", value: "low_rating" },
   ];
 
-  const handleSelect = (value: string) => {
+  const handleSelect = (value: SortType) => {
     setSort(value);
     setModalVisible(false);
   };
 
-  // TODO: useEffect to sort data
+  useEffect(() => {
+    if (sort) {
+      sortAction(sort);
+    }
+  }, [sort])
 
   return (
     <View style={styles.container}>

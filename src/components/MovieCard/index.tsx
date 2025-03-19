@@ -2,7 +2,7 @@ import { Star } from "phosphor-react-native";
 import { useState } from "react";
 import { Image, StyleSheet, Text, View, ViewStyle } from "react-native";
 
-interface MovieProps {
+interface MovieCardProps {
   title: string;
   description: string;
   poster: string;
@@ -18,7 +18,7 @@ export function MovieCard({
   year,
   rating,
   style,
-}: MovieProps) {
+}: MovieCardProps) {
   const [imageUrl, setImageUrl] = useState(poster);
 
   const ratingColor = rating > 7 ? '#28a745' : rating > 5 ? '#ffc107' : '#dc3545';
